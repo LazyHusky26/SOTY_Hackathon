@@ -37,6 +37,29 @@ AI Text Archaeologist is an intelligent system that reconstructs fragmented inte
 - Google Gemini API Key
 - Serper API Key
 
+### Obtaining API Keys
+**Google Gemini API Key**
+
+1. Visit Google AI Studio
+2. Sign in with your Google account
+3. Click on "Get API Key" or "Create API Key"
+4. Create a new API key or use an existing one
+5. Copy your API key (it starts with AIza...)
+   
+Important: Keep this key secure and never commit it to version control
+
+**Serper API Key**
+
+1. Go to Serper.dev
+2. Click "Sign Up" or "Get Started"
+3. Sign up using your Google account or email
+4. After logging in, navigate to your Dashboard
+5. Copy your API key from the dashboard
+   
+Note: Serper offers 2,500 free searches, perfect for testing and development
+
+
+
 ### Installation
 
 1. **Clone the repository**
@@ -74,17 +97,9 @@ AI Text Archaeologist is an intelligent system that reconstructs fragmented inte
 
 ### Running the Application
 
-1. **Start the Flask backend**
-   ```bash
-   python api.py
-   ```
-   Server runs on: `http://localhost:5000`
-
-2. **Start the React frontend** (in a new terminal)
    ```bash
    npm run dev
    ```
-   App runs on: `http://localhost:5173`
 
 ## 💡 Usage
 
@@ -169,4 +184,4 @@ If you encounter any issues or have questions, please [open an issue](https://gi
 
 ---
 
-                                             **Built with ❤️ for SOTY Hackathon**
+**Built with ❤️ for SOTY Hackathon**
