@@ -169,4 +169,4 @@ If you encounter any issues or have questions, please [open an issue](https://gi
 
 ---
 
-**Built with ❤️ for SOTY Hackathon**
+                                             **Built with ❤️ for SOTY Hackathon**
