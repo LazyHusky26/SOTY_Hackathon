@@ -167,20 +167,18 @@ Reconstructs fragmented text and retrieves contextual sources.
 }
 ```
 
-## 📝 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
-
-## 🙏 Acknowledgments
-
-- Google Gemini AI for powerful language understanding
-- Serper API for web search capabilities
-- The internet culture historians who documented early 2000s phenomena
-
 ## 📞 Support
 
 If you encounter any issues or have questions, please [open an issue](https://github.com/LazyHusky26/SOTY_Hackathon/issues).
+
+
+## 🙏 Members
+
+- Aarnav Tandava - SE22UARI002
+- Meet Sangani – SE24UARI184
+- Devi Gottumukkala – SE24UARI081
+- Varshika Sriya – SE24UARI146
+- Pushpashree Ramgopal – SE24UCSE048
 
 ---
 
