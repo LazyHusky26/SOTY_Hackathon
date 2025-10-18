@@ -67,6 +67,10 @@ AI Text Archaeologist is an intelligent system that reconstructs fragmented inte
    GEMINI_API_KEY=your_gemini_api_key_here
    SERPER_API_KEY=your_serper_api_key_here
    ```
+   **⚠️ Important**: 
+- Never commit your `.env` file (it's already in `.gitignore`)
+- Get your Gemini API key from [ai.google.dev](https://makersuite.google.com/app/apikey)
+- Get your Serper API key from [serper.dev](https://serper.dev/)
 
 ### Running the Application
 
