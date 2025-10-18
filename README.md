@@ -1,6 +1,6 @@
 # 🔮 AI Text Archaeologist
 
-> Reconstructing fragmented internet messages from early 2000s culture using AI and contextual web research
+> Reconstructing the forgotten voices of the early internet, one fragment at a time, using AI and contextual web research
 
 ![Project Banner](imgs/banner.png)
 
