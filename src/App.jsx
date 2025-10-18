@@ -288,7 +288,7 @@ function App() {
               setIsLoading(true)
               setError(null)
               setResults(null)
-              
+
               // Show popup box near the end of transition
               setTimeout(() => {
                 setShowPopupBox(true)
@@ -378,6 +378,92 @@ function App() {
           justifyContent: 'center',
         }}
       >
+        <style>
+          {`
+            .custom-scrollbar::-webkit-scrollbar {
+              width: 8px;
+            }
+            
+            .custom-scrollbar::-webkit-scrollbar-track {
+              background: rgba(255, 255, 255, 0.1);
+              border-radius: 10px;
+            }
+            
+            .custom-scrollbar::-webkit-scrollbar-thumb {
+              background: #e6ba0e;
+              border-radius: 10px;
+            }
+            
+            .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+              background: #d4a50d;
+            }
+            
+            /* Firefox scrollbar */
+            .custom-scrollbar {
+              scrollbar-width: thin;
+              scrollbar-color: #e6ba0e rgba(255, 255, 255, 0.1);
+            }
+            
+            /* 3D Cube Spinner */
+            .spinner {
+              width: 70.4px;
+              height: 70.4px;
+              --clr: rgb(230, 186, 14);
+              --clr-alpha: rgba(247, 197, 159, 0.1);
+              animation: spinner 1.6s infinite ease;
+              transform-style: preserve-3d;
+            }
+            
+            .spinner > div {
+              background-color: var(--clr-alpha);
+              height: 100%;
+              position: absolute;
+              width: 100%;
+              border: 3.5px solid var(--clr);
+            }
+            
+            .spinner div:nth-of-type(1) {
+              transform: translateZ(-35.2px) rotateY(180deg);
+            }
+            
+            .spinner div:nth-of-type(2) {
+              transform: rotateY(-270deg) translateX(50%);
+              transform-origin: top right;
+            }
+            
+            .spinner div:nth-of-type(3) {
+              transform: rotateY(270deg) translateX(-50%);
+              transform-origin: center left;
+            }
+            
+            .spinner div:nth-of-type(4) {
+              transform: rotateX(90deg) translateY(-50%);
+              transform-origin: top center;
+            }
+            
+            .spinner div:nth-of-type(5) {
+              transform: rotateX(-90deg) translateY(50%);
+              transform-origin: bottom center;
+            }
+            
+            .spinner div:nth-of-type(6) {
+              transform: translateZ(35.2px);
+            }
+            
+            @keyframes spinner {
+              0% {
+                transform: rotate(45deg) rotateX(-25deg) rotateY(25deg);
+              }
+              50% {
+                transform: rotate(45deg) rotateX(-385deg) rotateY(25deg);
+              }
+              100% {
+                transform: rotate(45deg) rotateX(-385deg) rotateY(385deg);
+              }
+            }
+          `}
+        </style>
+        
         {showPopupBox && (
           <>
             {/* Back button - only show when results or error are displayed */}
@@ -396,7 +482,7 @@ function App() {
                   position: 'absolute',
                   top: '1rem',
                   left: '1rem',
-                  backgroundColor: '#ff4757',
+                  backgroundColor: '#e6ba0e',
                   color: 'white',
                   border: 'none',
                   borderRadius: '8px',
@@ -407,28 +493,89 @@ function App() {
                   zIndex: 200,
                   transition: 'background-color 0.2s ease',
                 }}
-                onMouseEnter={(e) => e.target.style.backgroundColor = '#ff3742'}
-                onMouseLeave={(e) => e.target.style.backgroundColor = '#ff4757'}
+                onMouseEnter={(e) => e.target.style.backgroundColor = '#66490c'}
+                onMouseLeave={(e) => e.target.style.backgroundColor = '#e6ba0e'}
               >
                 Back
               </button>
             )}
-            
+
+            {/* PDF Download button - only show when results are displayed */}
+            {(!isLoading && results) && (
+              <button
+                onClick={() => {
+                  // Create text content for download
+                  const content = `
+RECONSTRUCTION REPORT
+
+[Original Fragment]
+> "${results.original}"
+
+[AI-Reconstructed Text]
+> "${results.reconstructed}"
+
+[Contextual Sources]
+${results.sources.map(source => `* ${source.link} (${source.description})`).join('\n')}
+                  `.trim();
+
+                  // Create a blob and download as text file
+                  const blob = new Blob([content], { type: 'text/plain' });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = 'reconstruction-report.txt';
+                  document.body.appendChild(a);
+                  a.click();
+                  document.body.removeChild(a);
+                  URL.revokeObjectURL(url);
+                }}
+                style={{
+                  position: 'absolute',
+                  top: '1rem',
+                  right: '1rem',
+                  backgroundColor: '#e6ba0e',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  padding: '0.5rem',
+                  cursor: 'pointer',
+                  zIndex: 200,
+                  transition: 'background-color 0.2s ease',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                onMouseEnter={(e) => e.target.style.backgroundColor = '#d4a50d'}
+                onMouseLeave={(e) => e.target.style.backgroundColor = '#e6ba0e'}
+                title="Download Report"
+              >
+                <img 
+                  src="/imgs/pdf.png" 
+                  alt="Download Report" 
+                  style={{ 
+                    width: '20px', 
+                    height: '20px',
+                    pointerEvents: 'none'
+                  }} 
+                />
+              </button>
+            )}
+
             {isLoading && (
-              <div className="loader-wrapper">
-                <div className="loader"></div>
-                {'Rebuilding'.split('').map((letter, index) => (
-                  <span key={index} className="loader-letter">
-                    {letter}
-                  </span>
-                ))}
+              <div className="spinner">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
               </div>
             )}
-            
+
             {!isLoading && error && (
-              <div style={{ 
-                color: '#ff6b6b', 
-                textAlign: 'center', 
+              <div style={{
+                color: '#ff6b6b',
+                textAlign: 'center',
                 padding: '2rem',
                 fontSize: '1.2rem'
               }}>
@@ -436,73 +583,124 @@ function App() {
                 <p>{error}</p>
               </div>
             )}
-            
+
             {!isLoading && results && (
-              <div style={{ 
-                color: '#fff', 
-                padding: '2rem', 
-                height: '100%', 
-                overflowY: 'auto',
-                fontSize: '1rem',
-                lineHeight: '1.6',
-                fontFamily: 'monospace'
-              }}>
-                <h2 style={{ 
-                  marginBottom: '1.5rem', 
-                  color: '#4ecdc4',
+              <div 
+                className="custom-scrollbar"
+                style={{
+                  color: '#fff',
+                  padding: '4rem 2rem 2rem 2rem',
+                  height: '100%',
+                  overflowY: 'auto',
+                  fontSize: '1rem',
+                  lineHeight: '1.6',
+                  fontFamily: 'monospace',
+                  borderRadius: '20px',
+                  boxSizing: 'border-box'
+                }}
+              >
+                <h2 style={{
+                  marginBottom: '1.5rem',
+                  color: '#e6ba0e',
                   textAlign: 'center',
-                  fontFamily: 'Inter, system-ui, Arial, sans-serif'
+                  fontFamily: 'Archivo Black, Inter, system-ui, Arial, sans-serif',
+                  fontSize: '2.5rem'
                 }}>
-                  --- RECONSTRUCTION REPORT ---
+                  RECONSTRUCTION REPORT
                 </h2>
-                
+
                 <div style={{ marginBottom: '2rem' }}>
-                  <h3 style={{ 
-                    color: '#ffd93d', 
+                  <h3 style={{
+                    color: '#e6ba0e',
                     marginBottom: '0.5rem',
-                    fontSize: '1.1rem',
+                    fontSize: '1.5rem',
                     fontWeight: 'bold'
                   }}>
                     [Original Fragment]
                   </h3>
-                  <p style={{ 
+                  <p style={{
                     backgroundColor: 'rgba(255, 255, 255, 0.1)',
                     padding: '1rem',
                     borderRadius: '8px',
-                    borderLeft: '4px solid #ffd93d',
+                    borderLeft: '4px solid #e6ba0e',
                     margin: '0.5rem 0',
-                    fontSize: '1rem'
+                    fontSize: '1rem',
+                    color: '#fff'
                   }}>
                     &gt; "{results.original}"
                   </p>
                 </div>
-                
+
                 <div style={{ marginBottom: '2rem' }}>
-                  <h3 style={{ 
-                    color: '#4ecdc4', 
-                    marginBottom: '0.5rem',
-                    fontSize: '1.1rem',
-                    fontWeight: 'bold'
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    marginBottom: '0.5rem'
                   }}>
-                    [AI-Reconstructed Text]
-                  </h3>
-                  <p style={{ 
+                    <h3 style={{
+                      color: '#e6ba0e',
+                      margin: 0,
+                      fontSize: '1.5rem',
+                      fontWeight: 'bold'
+                    }}>
+                      [AI-Reconstructed Text]
+                    </h3>
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(results.reconstructed)
+                          .then(() => {
+                            // Optional: Add visual feedback here
+                            console.log('Text copied to clipboard')
+                          })
+                          .catch(err => {
+                            console.error('Failed to copy text: ', err)
+                          })
+                      }}
+                      style={{
+                        background: 'transparent',
+                        border: 'none',
+                        cursor: 'pointer',
+                        padding: '4px',
+                        borderRadius: '4px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        transition: 'background-color 0.2s ease'
+                      }}
+                      onMouseEnter={(e) => e.target.style.backgroundColor = 'rgba(230, 186, 14, 0.1)'}
+                      onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
+                      title="Copy reconstructed text"
+                    >
+                      <img
+                        src="/imgs/copy.png"
+                        alt="Copy"
+                        style={{
+                          width: '20px',
+                          height: '20px',
+                          filter: 'brightness(0) saturate(100%) invert(77%) sepia(85%) saturate(1352%) hue-rotate(25deg) brightness(95%) contrast(95%)'
+                        }}
+                      />
+                    </button>
+                  </div>
+                  <p style={{
                     backgroundColor: 'rgba(255, 255, 255, 0.1)',
                     padding: '1rem',
                     borderRadius: '8px',
-                    borderLeft: '4px solid #4ecdc4',
+                    borderLeft: '4px solid #e6ba0e',
                     margin: '0.5rem 0',
-                    fontSize: '1rem'
+                    fontSize: '1rem',
+                    color: '#fff'
                   }}>
                     &gt; "{results.reconstructed}"
                   </p>
                 </div>
-                
+
                 <div>
-                  <h3 style={{ 
-                    color: '#ff6b6b', 
+                  <h3 style={{
+                    color: '#e6ba0e',
                     marginBottom: '1rem',
-                    fontSize: '1.1rem',
+                    fontSize: '1.5rem',
                     fontWeight: 'bold'
                   }}>
                     [Contextual Sources]
@@ -510,33 +708,33 @@ function App() {
                   {results.sources && results.sources.length > 0 ? (
                     <ul style={{ listStyle: 'none', padding: 0 }}>
                       {results.sources.map((source, index) => (
-                        <li key={index} style={{ 
+                        <li key={index} style={{
                           marginBottom: '1rem',
                           backgroundColor: 'rgba(255, 255, 255, 0.05)',
                           padding: '1rem',
                           borderRadius: '8px',
-                          borderLeft: '4px solid #ff6b6b'
+                          borderLeft: '4px solid #e6ba0e'
                         }}>
-                          <span style={{ color: '#ff6b6b', marginRight: '0.5rem' }}>*</span>
-                          <a 
-                            href={source.link} 
-                            target="_blank" 
+                          <span style={{ color: '#e6ba0e', marginRight: '0.5rem' }}>*</span>
+                          <a
+                            href={source.link}
+                            target="_blank"
                             rel="noopener noreferrer"
-                            style={{ 
-                              color: '#4ecdc4', 
+                            style={{
+                              color: '#fff',
                               textDecoration: 'none',
                               fontWeight: 'bold'
                             }}
                           >
                             {source.link}
                           </a>
-                          <span style={{ color: '#ccc' }}> ({source.description})</span>
+                          <span style={{ color: '#fff' }}> ({source.description})</span>
                         </li>
                       ))}
                     </ul>
                   ) : (
-                    <p style={{ 
-                      color: '#ccc',
+                    <p style={{
+                      color: '#fff',
                       fontStyle: 'italic',
                       marginLeft: '1rem'
                     }}>
