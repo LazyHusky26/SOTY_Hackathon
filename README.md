@@ -95,6 +95,7 @@ Note: Serper offers 2,500 free searches, perfect for testing and development
 - Get your Gemini API key from [ai.google.dev](https://makersuite.google.com/app/apikey)
 - Get your Serper API key from [serper.dev](https://serper.dev/)
 - Download nodejs from [nodejs.org](https://nodejs.org/en)
+- After running `npm run dev`, wait a few seconds for all the components to start up.
 
 ### Running the Application
 
